@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  password     String
+  name         String
+  phone        String
+  loungeId     String
+  paymentInfo  Json?
+  preferences  Json?
+  bookings     Booking[]
+  createdOn    DateTime  @default(now())
+  updatedOn    DateTime  @updatedAt
+  createdBy    String
+  updatedBy    String?
+}
+
+model Lounge {
+  id             String      @id @default(uuid())
+  name           String
+  location       String
+  amenities      String[]
+  operatingHours Json
+  capacity       Int
+  customerRatings Float[]
+  partnerId      String
+  partner        LoungePartner @relation(fields: [partnerId], references: [id])
+  bookings       Booking[]
+  reports        Report[]       // Added back-relation to Report
+  createdOn      DateTime    @default(now())
+  updatedOn      DateTime    @updatedAt
+  createdBy      String
+  updatedBy      String?
+}
+
+model Booking {
+  id             String    @id @default(uuid())
+  customerId     String
+  customer       Customer  @relation(fields: [customerId], references: [id])
+  loungeId       String
+  lounge         Lounge    @relation(fields: [loungeId], references: [id])
+  dateTime       DateTime
+  //time           String
+  numberOfPasses Int
+  status         String
+  qrCode         String    @unique
+  //payment        Payment?  // Added back-relation to Payment
+  createdOn      DateTime  @default(now())
+  updatedOn      DateTime  @updatedAt
+  createdBy      String
+  updatedBy      String?
+}
+
+model LoungePartner {
+  id             String    @id @default(uuid())
+  name           String
+  contactDetails Json
+  lounges        Lounge[]
+  createdOn      DateTime  @default(now())
+  updatedOn      DateTime  @updatedAt
+  createdBy      String
+  updatedBy      String?
+}
+
+model BusinessManager {
+  id        String @id @default(uuid())
+  name      String
+  email     String @unique
+  password  String
+  role      String
+  reports   Report[]
+  createdOn DateTime @default(now())
+  updatedOn DateTime @updatedAt
+  createdBy String
+  updatedBy String?
+}
+
+model Administrator {
+  id        String @id @default(uuid())
+  name      String
+  email     String @unique
+  password  String
+  role      String
+  createdOn DateTime @default(now())
+  updatedOn DateTime @updatedAt
+  createdBy String
+  updatedBy String?
+}
+
+
+
+model Report {
+  id         String         @id @default(uuid())
+  managerId  String
+  manager    BusinessManager @relation(fields: [managerId], references: [id])
+  loungeId   String?
+  lounge     Lounge?         @relation(fields: [loungeId], references: [id])
+  type       String
+  period     String
+  data       Json
+  createdOn  DateTime        @default(now())
+  updatedOn  DateTime        @updatedAt
+  createdBy  String
+  updatedBy  String?
+}
+
