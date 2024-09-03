@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SearchBar from '@/components/searchbar';
-import BookingComponent  from '@/components/booking';
+//import BookingComponent  from '@/components/booking';
+import LoungeForm from '@/components/LoungeForm';
 
 
 export type Lounge = {
@@ -30,7 +31,6 @@ export type Lounge = {
   createdBy: string;
   updatedBy?: string;
 };
-
 
 const ItemPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -83,10 +83,18 @@ const ItemPage = ({ params }: { params: { id: string } }) => {
             <p>Created By: {lounge.createdBy}</p>
             <p>Updated By: {lounge.updatedBy}</p>
           </div>
-
+          
+          <div className="space-y-2">
+        
+         {/* <UserClient data={users} /> */} 
+      </div>
+      <h1 className="text-3xl font-bold text-center mb-4">Add New Lounge</h1>
           <div>
-            <BookingComponent />
+          <LoungeForm />
           </div>
+          {/* <div>
+            <BookingComponent />
+          </div> */}
 
         </div>
       </div>

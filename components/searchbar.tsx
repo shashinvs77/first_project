@@ -78,6 +78,7 @@ export type Lounge = {
 
 
   return (
+    
      <form onSubmit={handleSearch} className="flex items-center w-full max-w-md mx-auto my-8">
       <input
         type="text"
@@ -91,10 +92,22 @@ export type Lounge = {
         type="submit"
         className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        {loading ? 'Searching...' : 'Search'}
+        {'Search'}
       </button>
-    </form> 
 
+    
+
+    <div className="px-4 w-10 flex items-center">
+       <button
+        //onClick={handleSearch}
+        type="submit"
+        className="w-24 px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+        {'Add'} 
+      </button>  
+
+    </div>
+    </form>
     
   );
 };
